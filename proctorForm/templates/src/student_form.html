@@ -1,0 +1,12 @@
+{%extends 'src/base.html'%}
+{%load staticfiles%}
+{%block title%}V.C.E.T | Proctor Form{%endblock%}
+
+{%block section%}
+<form method="POST">{%csrf_token%}
+{{form.as_p}}
+<button class="is-dark button" type='submit'>
+  Submit
+</button>
+</form>
+{%endblock%}
