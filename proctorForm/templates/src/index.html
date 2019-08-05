@@ -17,6 +17,11 @@
       <p class="subtitle">
         <a class="is-dark button" href="{%url 'proctor_form'%}">Create Account</a>
         <a class="is-light button" href="#">Update Record</a>
+      {% if user.is_student %}
+      <a class="is-dark button" href="{%url 'proctor_form'%}">Fill Form</a>
+      {%else%}
+      <a class="is-dark button" href="{%url 'student_signup'%}">Create Account</a>
+      {%endif%}
       </p>
     </div>
   </div>

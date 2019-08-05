@@ -32,8 +32,8 @@ class Proctor(models.Model):
 
 class Student(models.Model):
 	user = models.OneToOneField(User, on_delete = models.CASCADE)
-	student_id = models.IntegerField() # i think we can use username from class'user' intead of creating new attribute
-	# student_name = models.CharField(max_length = 150)
+ # i think we can use username from class'user' intead of creating new attribute
+ # 	# student_name = models.CharField(max_length = 150)
 	student_contact = models.IntegerField()
 	student_address = models.TextField()
 	student_interest = models.TextField()
