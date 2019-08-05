@@ -9,6 +9,7 @@ urlpatterns = [
 	path('student/',views.student_view,name='student_view'),
 	path('proctor_form/',views.StudentForm.as_view(),name='proctor_form'),
 	path('student_signup_form/',views.StudentSignUp.as_view(),name='student_signup'),
+	path('teacher_signup_form/',views.TeacherSignUp.as_view(),name='teacher_signup'),
 
     #authentication
     path('login/',auth_views.LoginView.as_view(),name='login'),

@@ -28,17 +28,18 @@
           </span>
         </div>
         <div id="navbarMenuHeroB" class="navbar-menu">
+          {% with request.resolver_match.url_name as url_name %}
           <div class="navbar-end">
-            <a class="navbar-item is-active">
+            <a class="navbar-item {% if url_name == 'home' %}is-active{% endif %}" href='{%url "home"%}'>
               Home
             </a>
-            <a class="navbar-item" href="{%url 'department_view'%}">
+            <a class="navbar-item {% if url_name == 'department_view' %}is-active{% endif %}" href="{%url 'department_view'%}">
               Department
             </a>
-            <a class="navbar-item">
+            <a class="navbar-item {% if url_name == 'login' %}is-active{% endif %}" href='{%url "login"%}'>
               Login
             </a>
-            <span class="navbar-item">
+            <span class="navbar-item {% if url_name == 'user' %}is-active{% endif %}">
               <a class="button is-info is-inverted">
                 <span class="icon">
                   <i class="fab fa-github"></i>
@@ -47,6 +48,7 @@
               </a>
             </span>
           </div>
+          {% endwith %}
         </div>
       </div>
     </nav>
