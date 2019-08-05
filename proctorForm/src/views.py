@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.edit import CreateView,UpdateView
-from src.forms import ProctorForm
-from src.models import Student
+from .forms import ProctorForm
+from .models import Student
 # Create your views here.
 def index(request):
 	return render(request,'src/index.html',{})

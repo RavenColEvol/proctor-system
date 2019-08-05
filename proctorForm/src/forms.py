@@ -1,5 +1,5 @@
 from django import forms
-from src.models import Student
+from .models import Student
 
 
 class ProctorForm(forms.ModelForm):
