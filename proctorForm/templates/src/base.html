@@ -35,8 +35,9 @@
             <a class="navbar-item" href="{%url 'department_view'%}">
               Department
             </a>
-            <a class="navbar-item">
-              Login
+            {% if request.user.is_authenticated %}
+            <a class="navbar-item" href="{% url 'logout' %}">
+              Logout
             </a>
             <span class="navbar-item">
               <a class="button is-info is-inverted">
@@ -46,6 +47,11 @@
                 <span>{{user.username}}</span>
               </a>
             </span>
+            {% else %}
+            <a class="navbar-item" href="{% url 'login' %}">
+              Login
+            </a>
+            {% endif %}
           </div>
         </div>
       </div>

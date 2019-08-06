@@ -7,7 +7,7 @@ class User(AbstractUser):
 	is_teacher = models.BooleanField(default = False)
 	is_student = models.BooleanField(default = False)
 	is_hod = models.BooleanField(default = False)
-	#profile_pic = models.ImageField(upload_to = 'profile_pics/',blank = True)
+	profile_pic = models.ImageField(upload_to = 'profile_pics/',blank = True)
 
 class Department(models.Model):
 	department_choices = (
@@ -21,10 +21,13 @@ class Department(models.Model):
 	)
 	department_name = models.CharField(max_length = 50 , choices = department_choices)
 
+	def __str__(self):
+   		return self.department_name
 
 class Proctor(models.Model):
 	user = models.OneToOneField(User, on_delete = models.CASCADE)
 	# proctor_name = models.CharField(max_length = 150) we can use first_name , last_name from user class
+	proc_department = models.ForeignKey(Department, on_delete = models.CASCADE)
 	proctor_about = models.CharField(max_length = 300)
 	proctor_contact = models.IntegerField()
 	# proctor_image = models.ImageField() we can user profile_pic from user
@@ -32,8 +35,6 @@ class Proctor(models.Model):
 
 class Student(models.Model):
 	user = models.OneToOneField(User, on_delete = models.CASCADE)
- # i think we can use username from class'user' intead of creating new attribute
- # 	# student_name = models.CharField(max_length = 150)
 	student_contact = models.IntegerField()
 	student_address = models.TextField()
 	student_interest = models.TextField()
