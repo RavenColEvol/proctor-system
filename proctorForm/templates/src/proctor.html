@@ -4,5 +4,11 @@
 {%block title%}V.C.E.T | Proctor Form{%endblock%}
 
 {%block section%}
-proctor
+<ul>
+    {% for proc in object_list %}
+    <li><a href='{% url "proctor_details" proc.id%}'>{{proc.user.first_name}}</a></li>
+    {% empty %}
+    <b>No Proctor in this Department</b>
+    {% endfor %}
+</ul>
 {%endblock%}

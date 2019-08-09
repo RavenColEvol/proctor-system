@@ -4,5 +4,12 @@
 {%block title%}V.C.E.T | Proctor Form{%endblock%}
 
 {%block section%}
-Department
+
+<ul>
+    {% for dept in object_list %}
+    <li><a href="{% url 'proctor_view' dept.id %}">{{dept.department_name}}</a></li>
+    {% empty %}
+    <b>No Department</b>
+    {% endfor %}
+</ul>
 {%endblock%}

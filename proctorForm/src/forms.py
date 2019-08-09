@@ -24,7 +24,6 @@ class TeacherSignUpForm(UserCreationForm):
 	class Meta(UserCreationForm.Meta):
 		model=User
 
-	@transaction.atomic
 	def save(self):
 		user = super().save(commit=False)
 		user.is_teacher = True

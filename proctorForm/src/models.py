@@ -33,7 +33,7 @@ class Proctor(models.Model):
 	# proctor_image = models.ImageField() we can user profile_pic from user
 
 	def __str__(self):
-		return self.user
+		return self.user.first_name +" "+ self.user.last_name
 
 
 class Student(models.Model):
