@@ -1,7 +1,5 @@
 from django.shortcuts import render
 from django.views.generic.edit import CreateView,UpdateView
-from .forms import ProctorForm
-from .models import Student
 from .forms import ProctorForm,StudentSignUpForm
 from .models import Student,User
 from django.contrib.auth import login,logout
@@ -20,9 +18,6 @@ def proctor_view(request):
 def department_view(request):
 	return render(request,'src/department.html',{})
 
-def student_form(request):
-	form = ProctorForm()
-	return render(request,'src/forms/student_form.html',{'form':form})
 
 class StudentForm(CreateView):
     model=Student
@@ -42,7 +37,17 @@ class StudentUpdateForm(UpdateView):
 class StudentSignUp(CreateView):
 	model=User
 	form_class = StudentSignUpForm
-	template_name = 'src/student_form.html'
+	template_name = 'src/forms/student_form.html'
+
+	def form_valid(self,form):
+		user = form.save()
+		login(self.request,user)
+		return redirect('home')
+
+class TeacherSignUp(CreateView):
+	model=User
+	form_class = TeacherSignUpForm
+	template_name = 'src/forms/teacher_form.html'
 
 	def form_valid(self,form):
 		user = form.save()

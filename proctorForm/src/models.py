@@ -32,6 +32,9 @@ class Proctor(models.Model):
 	proctor_contact = models.IntegerField()
 	# proctor_image = models.ImageField() we can user profile_pic from user
 
+	def __str__(self):
+		return self.user
+
 
 class Student(models.Model):
 	user = models.OneToOneField(User, on_delete = models.CASCADE)
@@ -48,3 +51,6 @@ class Student(models.Model):
 	#student_sem4 = models.IntegerField()
 	#student_sem5 = models.IntegerField()
 	#student_sem6 = models.IntegerField()
+
+	def __str__(self):
+		return self.user
