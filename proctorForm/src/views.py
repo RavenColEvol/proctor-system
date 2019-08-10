@@ -1,4 +1,4 @@
-from django.shortcuts import render ,get_object_or_404, get_list_or_404
+from django.shortcuts import render ,get_object_or_404, get_list_or_404, redirect
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -6,7 +6,6 @@ from .forms import ProctorForm,StudentSignUpForm,TeacherSignUpForm
 from .models import Student, User, Department, Proctor
 
 from django.contrib.auth import login,logout
-from django.shortcuts import redirect
 
 # Create your views here.
 def index(request):
@@ -14,6 +13,10 @@ def index(request):
 
 def student_view(request):
 	return render(request,'src/student.html',{})
+
+def dashboard(request):
+	students_under_teacher = Student.objects.filter(proctor_id__user = request.user)
+	return render(request,'src/dashboard.html',{'students':students_under_teacher})
 
 class proctor_view(ListView):
 	template_name = 'src/proctor.html'

@@ -53,4 +53,4 @@ class Student(models.Model):
 	#student_sem6 = models.IntegerField()
 
 	def __str__(self):
-		return self.user
+		return self.user.first_name +" "+ self.user.last_name
