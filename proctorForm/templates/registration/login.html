@@ -1,11 +1,59 @@
 {%extends 'src/base.html'%}
+{% load staticfiles %}
 {%block title%}
     Login Form
 {%endblock%}
 {%block section%}
-    <form method='POST'>
+    
+    <form method = "POST" class="login-form" action="{% url 'login' %}">
+        <h1>Welcome back!</h1>
+        {% csrf_token %}
+        <div class="txtb">
+        <input type="text" name="username">
+        <span data-placeholder="Username"></span>
+        </div>
+
+        <div class="txtb txtp">
+        <input type="password" name="password">
+        <span data-placeholder="Password"></span>
+        </div>
+
+        <div class="bottom-text">
+        <a href="{% url 'password_reset' %}">Forgot Password?</a>
+        </div>
+
+        <input type="submit" class="logbtn" value="LOGIN">
+        {% if form.errors %}
+            <!-- Error messaging -->
+            <div id="errors">
+                <div class="inner">
+                    <p>There were some errors in the information you entered. Please correct the following:</p>
+                    {{ form.non_field_errors }}
+                    <ul>
+                        {% for field in form %}
+                            {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <!-- /Error messaging -->
+        {% endif %}
+    </form>
+
+    <script type="text/javascript">
+    $(".txtb input").on("focus",function(){
+        $(this).addClass("focus");
+    });
+
+    $(".txtb input").on("blur",function(){
+        if($(this).val() == "")
+        $(this).removeClass("focus");
+    });
+
+    </script>
+    <!-- <form method='POST'>
         {%csrf_token%}
         {{form.as_p}}
         <button type='submit' class='button is-dark' >Login</button>
-    </form>
+    </form> -->
 {%endblock%}

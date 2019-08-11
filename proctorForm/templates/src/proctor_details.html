@@ -1,0 +1,11 @@
+{% extends 'src/base.html'%}
+{% load staticfiles %}
+{% block title%} Proctor Details {% endblock%}
+{% block section%}
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td>{{object.user.first_name}} {{object.user.last_name}}</td>
+        </tr>
+    </table>
+{% endblock%}

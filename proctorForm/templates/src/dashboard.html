@@ -1,0 +1,14 @@
+{% extends 'src/base.html' %}
+{% load staticfiles %}
+{% block title %} Dashboard {% endblock %}
+{% block section%}
+
+<b>Dashboard</b>
+{% for student in students %}
+<br>
+{{student.user.first_name}} {{student.user.last_name}}
+{% empty %}
+<br>
+<b>No students</b>
+{% endfor %}
+{% endblock%}

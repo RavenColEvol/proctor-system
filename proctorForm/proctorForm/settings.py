@@ -86,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'nontoxic',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -140,3 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+#console email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

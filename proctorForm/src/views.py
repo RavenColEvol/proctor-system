@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render ,get_object_or_404, get_list_or_404, redirect
 from django.views.generic.edit import CreateView,UpdateView
-from src.forms import ProctorForm,StudentSignUpForm,TeacherSignUpForm
-from src.models import Student,User
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from .forms import ProctorForm,StudentSignUpForm,TeacherSignUpForm
+from .models import Student, User, Department, Proctor
+
 from django.contrib.auth import login,logout
-from django.shortcuts import redirect
 
 # Create your views here.
 def index(request):
@@ -12,12 +14,26 @@ def index(request):
 def student_view(request):
 	return render(request,'src/student.html',{})
 
-def proctor_view(request):
-	return render(request,'src/proctor.html',{})
+def dashboard(request):
+	students_under_teacher = Student.objects.filter(proctor_id__user = request.user)
+	return render(request,'src/dashboard.html',{'students':students_under_teacher})
 
-def department_view(request):
-	return render(request,'src/department.html',{})
+class proctor_view(ListView):
+	template_name = 'src/proctor.html'
+	def get_queryset(self):
+		id_ = self.kwargs.get("id")
+		return get_list_or_404(Proctor,proc_department = id_)
 
+class department_view(ListView):
+	template_name = 'src/department.html'
+	def get_queryset(self):
+	 return Department.objects.order_by('department_name')
+
+class proctor_details(DetailView):
+	template_name = 'src/proctor_details.html'
+	def get_object(self, queryset=None):
+		id_ = self.kwargs.get("id")
+		return get_object_or_404(Proctor,id = id_)
 
 class StudentForm(CreateView):
     model=Student
