@@ -44,13 +44,12 @@ class Student(models.Model):
 	student_extracurricular = models.TextField()
 	# student_image = models.ImageField()
 	proctor_id = models.ForeignKey(Proctor, on_delete=models.CASCADE)
-	sem_pointer =  ArrayField(models.IntegerField(default = 0),null = True, size = 8)
-	#student_sem1 = models.IntegerField()
-	#student_sem2 = models.IntegerField()
-	#student_sem3 = models.IntegerField()
-	#student_sem4 = models.IntegerField()
-	#student_sem5 = models.IntegerField()
-	#student_sem6 = models.IntegerField()
+	student_sem1 = models.FloatField(default = 0)
+	student_sem2 = models.FloatField(default = 0)
+	student_sem3 = models.FloatField(default = 0)
+	student_sem4 = models.FloatField(default = 0)
+	student_sem5 = models.FloatField(default = 0)
+	student_sem6 = models.FloatField(default = 0)
 
 	def __str__(self):
 		return self.user.first_name +" "+ self.user.last_name
