@@ -10,5 +10,6 @@
             "server": "127.0.0.1",
             "username": "postgres"
         }
-    ]
+    ],
+    "python.pythonPath": "/home/rooted/.local/share/virtualenvs/ProctorForm-il2UwTNq/bin/python"
 }

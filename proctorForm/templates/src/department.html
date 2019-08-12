@@ -7,7 +7,7 @@
 
 <ul>
     {% for dept in object_list %}
-    <li><a href="{% url 'proctor_view' dept.id %}">{{dept.department_name}}</a></li>
+    <li><a href="{{dept.get_absolute_url}}">{{dept.department_name}}</a></li>
     {% empty %}
     <b>No Department</b>
     {% endfor %}

@@ -9,12 +9,12 @@
         <h1>Welcome back!</h1>
         {% csrf_token %}
         <div class="txtb">
-        <input type="text" name="username">
+        <input type="text" name="username" id='username'>
         <span data-placeholder="Username"></span>
         </div>
 
         <div class="txtb txtp">
-        <input type="password" name="password">
+        <input type="password" name="password" id='password'>
         <span data-placeholder="Password"></span>
         </div>
 
@@ -39,7 +39,6 @@
             <!-- /Error messaging -->
         {% endif %}
     </form>
-
     <script type="text/javascript">
     $(".txtb input").on("focus",function(){
         $(this).addClass("focus");

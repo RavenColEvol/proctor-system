@@ -1,4 +1,8 @@
 from django.shortcuts import render ,get_object_or_404, get_list_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from .decorators  import teacher_required,hod_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -13,6 +17,7 @@ def index(request):
 
 def student_view(request):
 	return render(request,'src/student.html',{})
+
 
 def dashboard(request):
 	students_under_teacher = Student.objects.filter(proctor_id__user = request.user)
@@ -34,6 +39,14 @@ class proctor_details(DetailView):
 	def get_object(self, queryset=None):
 		id_ = self.kwargs.get("id")
 		return get_object_or_404(Proctor,id = id_)
+
+@method_decorator(teacher_required, name='dispatch')
+class student_details(LoginRequiredMixin,DetailView):
+	login_url = '/login/'
+	template_name = 'src/student_details.html'
+	def get_object(self, queryset=None):
+		id_ = self.kwargs.get('id')
+		return get_object_or_404(Student,id = id_)
 
 class StudentForm(CreateView):
     model=Student
@@ -60,7 +73,10 @@ class StudentSignUp(CreateView):
 		login(self.request,user)
 		return redirect('home')
 
-class TeacherSignUp(CreateView):
+
+@method_decorator(hod_required, name='dispatch')
+class TeacherSignUp(LoginRequiredMixin,CreateView):
+	login_url = '/login/'
 	model=User
 	form_class = TeacherSignUpForm
 	template_name = 'src/forms/teacher_form.html'
