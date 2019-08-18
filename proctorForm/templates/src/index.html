@@ -20,6 +20,11 @@
       {%else%}
       <a class="is-dark button" href="{%url 'student_signup'%}">Create Account</a>
       {%endif%}
+      {%if user.is_authenticated and user.is_teacher%}
+      <a href="{%url 'teacher_update_view' request.user.id %}">Update Form</a>
+      {%elif user.is_authenticated and user.is_student%}
+      <a href="{%url 'student_update_view' request.user.id %}">Update Form</a>
+      {%endif%}
       </p>
     </div>
   </div>

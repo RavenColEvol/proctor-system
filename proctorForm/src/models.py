@@ -62,3 +62,18 @@ class Student(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('student_details',kwargs={'id':self.id})
+
+
+class Messages(models.Model):
+	user = models.ForeignKey(User, on_delete = models.CASCADE)
+	message = models.CharField(max_length=150)
+	timestamp = models.TimeField(auto_now=True)
+
+	class Meta:
+		verbose_name = 'Message'
+		verbose_name_plural = 'Messages'
+
+	def __str__(self):
+		return self.user.username
+
+

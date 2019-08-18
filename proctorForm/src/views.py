@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .forms import ProctorForm,StudentSignUpForm,TeacherSignUpForm
-from .models import Student, User, Department, Proctor
+from .models import Student, User, Department, Proctor, Messages
 
 from django.contrib.auth import login,logout
 
@@ -58,10 +58,14 @@ class StudentForm(CreateView):
         instance.save()
         return redirect('home')
 
-class StudentUpdateForm(UpdateView):
+class StudentUpdateView(UpdateView):
 	model = Student
-	fields = '__all__'
+	form_class = ProctorForm
 	template_name_suffix = '_update_form'
+
+	def get_object(self,queryset=None):
+		obj = Student.objects.get(user =self.request.user)
+		return obj
 
 class StudentSignUp(CreateView):
 	model=User
@@ -89,3 +93,30 @@ class TeacherSignUp(LoginRequiredMixin,CreateView):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+
+class MessageView(ListView):
+	template_name = 'src/messages.html'
+	model = Messages
+	context_object_name = 'messages'
+
+class CreateMessageView(CreateView):
+	template_name = 'src/forms/create_message.html'
+	model = Messages
+	fields = ('message',)
+
+	def form_valid(self,form):
+		instance = form.save(commit=False)
+		instance.user = self.request.user
+		instance.save()
+		return redirect('home')
+
+class TeacherProfileUpdateView(UpdateView):
+	model = Proctor
+	fields = ('proc_department','proctor_about','proctor_contact')
+	template_name = 'student_update_form.html'
+	success_url = 'home'
+
+	def get_object(self,queryset=None):
+		obj = Proctor.objects.get(user =self.request.user)
+		return obj
