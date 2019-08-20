@@ -11,4 +11,8 @@
 <br>
 <b>No students</b>
 {% endfor %}
+<br>
+{% if request.user.is_hod %}
+<a href="{% url 'teacher_signup' %}">Add Teacher</a>
+{% endif%}
 {% endblock%}

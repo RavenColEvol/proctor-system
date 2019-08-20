@@ -1,11 +1,9 @@
 from django import forms
 from .models import Student
-from django.contrib.postgres.forms import SimpleArrayField
 from django.contrib.auth.forms import UserCreationForm
 from .models import Student, User
 
 class ProctorForm(forms.ModelForm):
-	sem_pointers = SimpleArrayField(forms.IntegerField())
 	class Meta:
 		model = Student
 		exclude = ['user',]
@@ -13,6 +11,7 @@ class ProctorForm(forms.ModelForm):
 class StudentSignUpForm(UserCreationForm):	
 	class Meta(UserCreationForm.Meta):
 		model=User
+		fields = ['first_name','last_name','email','username',]
 
 	def save(self):
 		user = super().save(commit=False)
@@ -23,7 +22,7 @@ class StudentSignUpForm(UserCreationForm):
 class TeacherSignUpForm(UserCreationForm):	
 	class Meta(UserCreationForm.Meta):
 		model=User
-
+		fields = ['first_name','last_name','email','username',]
 	def save(self):
 		user = super().save(commit=False)
 		user.is_teacher = True
