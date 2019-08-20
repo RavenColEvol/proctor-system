@@ -1,9 +1,13 @@
 from django.shortcuts import render ,get_object_or_404, get_list_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from .decorators  import teacher_required,hod_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .forms import ProctorForm,StudentSignUpForm,TeacherSignUpForm
-from .models import Student, User, Department, Proctor
+from .models import Student, User, Department, Proctor, Messages
 
 from django.contrib.auth import login,logout
 
@@ -13,6 +17,7 @@ def index(request):
 
 def student_view(request):
 	return render(request,'src/student.html',{})
+
 
 def dashboard(request):
 	students_under_teacher = Student.objects.filter(proctor_id__user = request.user)
@@ -35,6 +40,14 @@ class proctor_details(DetailView):
 		id_ = self.kwargs.get("id")
 		return get_object_or_404(Proctor,id = id_)
 
+@method_decorator(teacher_required, name='dispatch')
+class student_details(LoginRequiredMixin,DetailView):
+	login_url = '/login/'
+	template_name = 'src/student_details.html'
+	def get_object(self, queryset=None):
+		id_ = self.kwargs.get('id')
+		return get_object_or_404(Student,id = id_)
+
 class StudentForm(CreateView):
     model=Student
     form_class = ProctorForm
@@ -45,10 +58,14 @@ class StudentForm(CreateView):
         instance.save()
         return redirect('home')
 
-class StudentUpdateForm(UpdateView):
+class StudentUpdateView(UpdateView):
 	model = Student
-	fields = '__all__'
+	form_class = ProctorForm
 	template_name_suffix = '_update_form'
+
+	def get_object(self,queryset=None):
+		obj = Student.objects.get(user =self.request.user)
+		return obj
 
 class StudentSignUp(CreateView):
 	model=User
@@ -60,7 +77,10 @@ class StudentSignUp(CreateView):
 		login(self.request,user)
 		return redirect('home')
 
-class TeacherSignUp(CreateView):
+
+@method_decorator(hod_required, name='dispatch')
+class TeacherSignUp(LoginRequiredMixin,CreateView):
+	login_url = '/login/'
 	model=User
 	form_class = TeacherSignUpForm
 	template_name = 'src/forms/teacher_form.html'
@@ -73,3 +93,30 @@ class TeacherSignUp(CreateView):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+
+class MessageView(ListView):
+	template_name = 'src/messages.html'
+	model = Messages
+	context_object_name = 'messages'
+
+class CreateMessageView(CreateView):
+	template_name = 'src/forms/create_message.html'
+	model = Messages
+	fields = ('message',)
+
+	def form_valid(self,form):
+		instance = form.save(commit=False)
+		instance.user = self.request.user
+		instance.save()
+		return redirect('home')
+
+class TeacherProfileUpdateView(UpdateView):
+	model = Proctor
+	fields = ('proc_department','proctor_about','proctor_contact')
+	template_name = 'student_update_form.html'
+	success_url = 'home'
+
+	def get_object(self,queryset=None):
+		obj = Proctor.objects.get(user =self.request.user)
+		return obj

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
+from django.urls import reverse
+
 # Create your models here.
 
 class User(AbstractUser):
@@ -24,16 +26,21 @@ class Department(models.Model):
 	def __str__(self):
    		return self.department_name
 
+	def get_absolute_url(self):
+		return reverse('proctor_view',kwargs={'id':self.id})
+
 class Proctor(models.Model):
 	user = models.OneToOneField(User, on_delete = models.CASCADE)
-	# proctor_name = models.CharField(max_length = 150) we can use first_name , last_name from user class
 	proc_department = models.ForeignKey(Department, on_delete = models.CASCADE)
 	proctor_about = models.CharField(max_length = 300)
 	proctor_contact = models.IntegerField()
-	# proctor_image = models.ImageField() we can user profile_pic from user
+	
 
 	def __str__(self):
-		return self.user.first_name +" "+ self.user.last_name
+		return self.user.username
+
+	def get_absolute_url(self):
+		return reverse('proctor_view',kwargs={'id':self.id})
 
 
 class Student(models.Model):
@@ -42,7 +49,6 @@ class Student(models.Model):
 	student_address = models.TextField()
 	student_interest = models.TextField()
 	student_extracurricular = models.TextField()
-	# student_image = models.ImageField()
 	proctor_id = models.ForeignKey(Proctor, on_delete=models.CASCADE)
 	student_sem1 = models.FloatField(default = 0)
 	student_sem2 = models.FloatField(default = 0)
@@ -52,4 +58,22 @@ class Student(models.Model):
 	student_sem6 = models.FloatField(default = 0)
 
 	def __str__(self):
-		return self.user.first_name +" "+ self.user.last_name
+		return self.user.username
+
+	def get_absolute_url(self):
+		return reverse('student_details',kwargs={'id':self.id})
+
+
+class Messages(models.Model):
+	user = models.ForeignKey(User, on_delete = models.CASCADE)
+	message = models.CharField(max_length=150)
+	timestamp = models.TimeField(auto_now=True)
+
+	class Meta:
+		verbose_name = 'Message'
+		verbose_name_plural = 'Messages'
+
+	def __str__(self):
+		return self.user.username
+
+

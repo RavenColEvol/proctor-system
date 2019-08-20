@@ -1,0 +1,8 @@
+{%extends 'src/base.html'%}
+
+{%block section%}
+    {%for message in messages%}
+    {{message.user}}
+        {{message.message}}</br/>
+    {%endfor%}
+{%endblock%}
